@@ -1,0 +1,17 @@
+:root{
+  --radius-0:0px;
+  --radius-2:2px;
+  --radius-4:4px;
+  --radius-pill:9999px;
+
+  --border-width:1px;
+  --border-width-thick:2px;
+
+  --shadow-none:none;
+  --shadow-hard:4px 4px 0 #0A0A0A;
+  --shadow-hard-sm:2px 2px 0 #0A0A0A;
+  --shadow-hard-accent:4px 4px 0 var(--orange);
+
+  --rule:1px solid var(--border);
+  --rule-strong:1px solid var(--border-strong);
+}

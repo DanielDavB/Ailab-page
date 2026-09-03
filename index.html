@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AiLab — Automatización con IA para PyMEs</title>
+<meta name="description" content="Consultoría y automatización con IA para pequeñas y medianas empresas en México y LATAM. Diagnóstico, agentes de IA, automatización de procesos y capacitación.">
+<link rel="stylesheet" href="assets/ds/styles.css">
+<style>body{background:var(--bg)}#root{min-height:100vh}
+@keyframes ail-marquee{to{transform:translateX(-50%)}}
+.ail-marquee:hover .ail-marquee-track{animation-play-state:paused}
+.ail-marquee-item:hover{color:#F5F5F5}
+@keyframes ail-drop{from{opacity:0;transform:translateY(-100%)}to{opacity:1;transform:none}}
+header{animation:ail-drop .6s cubic-bezier(.2,.7,.2,1) both}
+#ail-progress{position:fixed;top:0;left:0;height:2px;width:0;background:var(--orange);z-index:60;transition:width .1s linear}
+button,a{transition:color .25s ease,background .25s ease,border-color .25s ease,transform .25s cubic-bezier(.2,.7,.2,1)}
+.ail-auto{opacity:0;transform:translateY(24px);filter:blur(5px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1),filter .7s ease;will-change:opacity,transform}
+.ail-auto.ail-in{opacity:1;transform:none;filter:none}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.ail-auto{opacity:1!important;transform:none!important;filter:none!important}}</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="assets/ds/ds-bundle.js"></script>
+<script src="data.js"></script>
+</head>
+<body>
+<div id="ail-progress"></div>
+<div id="root"></div>
+<script>addEventListener('scroll',function(){var h=document.documentElement;var p=h.scrollTop/((h.scrollHeight-h.clientHeight)||1);var el=document.getElementById('ail-progress');if(el)el.style.width=(p*100)+'%'},{passive:true});</script>
+<script type="text/babel" src="assets/js/Motion.jsx"></script>
+<script type="text/babel" src="assets/js/Chrome.jsx"></script>
+<script type="text/babel" src="assets/js/HomeScreen.jsx"></script>
+<script type="text/babel" src="assets/js/ServicesScreen.jsx"></script>
+<script type="text/babel" src="assets/js/CasesScreen.jsx"></script>
+<script type="text/babel" src="assets/js/InnerScreens.jsx"></script>
+<script type="text/babel" src="assets/js/ContactScreen.jsx"></script>
+<script type="text/babel">
+const { Dialog, Toast, Button, Input } = window.AiLabDesignSystem_1d6ea7;
+
+/* Rutas simples vía hash, para poder compartir/recargar una página del sitio (#servicios, #casos, etc). */
+function routeFromHash(){
+  const h = (window.location.hash || '').replace('#','');
+  return h || 'home';
+}
+
+function App(){
+  const [route,setRoute]=React.useState(routeFromHash());
+  const [slug,setSlug]=React.useState('distribuidora');
+  const [dialog,setDialog]=React.useState(false);
+  const [toast,setToast]=React.useState(null);
+  const go=(r)=>{
+    if(r==='login'){ window.location.href='portal/index.html'; return; }
+    setRoute(r);
+    if(window.location.hash.replace('#','') !== r) window.location.hash = r === 'home' ? '' : r;
+    window.scrollTo(0,0);
+  };
+  React.useEffect(()=>{
+    const onHash=()=>setRoute(routeFromHash());
+    window.addEventListener('hashchange', onHash);
+    return ()=>window.removeEventListener('hashchange', onHash);
+  },[]);
+  const openCase=(s)=>{setSlug(s);go('caso');};
+  const confirm=(who)=>{setDialog(false);go('home');setToast('Diagnóstico agendado · '+who);setTimeout(()=>setToast(null),4000);};
+  return (<>
+    <Header route={route} onNavigate={go} onCta={()=>setDialog(true)} onLogin={()=>go('login')} />
+    {route==='home' && <HomeScreen onNavigate={go} onCase={openCase} onCta={()=>setDialog(true)} onLogin={()=>go('login')} />}
+    {route==='servicios' && <ServicesScreen onCta={()=>go('contacto')} />}
+    {route==='casos' && <CasesScreen onCase={openCase} />}
+    {route==='caso' && <CaseDetailScreen slug={slug} onBack={()=>go('casos')} onCta={()=>go('contacto')} />}
+    {route==='metodologia' && <MethodScreen onCta={()=>go('contacto')} />}
+    {route==='academia' && <AcademyScreen onCta={()=>go('contacto')} />}
+    {route==='nosotros' && <AboutScreen onCta={()=>go('contacto')} />}
+    {route==='contacto' && <ContactScreen onSubmit={confirm} />}
+    {route==='privacidad' && <PrivacyScreen />}
+    <Footer onNavigate={go} />
+    <Dialog open={dialog} title="Agendar diagnóstico" onClose={()=>setDialog(false)}
+      footer={<><Button variant="secondary" onClick={()=>setDialog(false)}>Cancelar</Button><Button variant="accent" onClick={()=>confirm('hola@empresa.com')}>Enviar</Button></>}>
+      <p style={{marginBottom:24}}>Déjanos tu correo y te enviamos 3 horarios disponibles esta semana.</p>
+      <Input label="Correo de trabajo" placeholder="nombre@empresa.com" />
+    </Dialog>
+    {toast && <div style={{position:'fixed',right:24,bottom:24,zIndex:200}}><Toast tone="success" message="Diagnóstico agendado" detail={toast} onDismiss={()=>setToast(null)} /></div>}
+  </>);
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+/* Auto-reveal para las pantallas que no traen <Reveal> propio */
+if(!window.REDUCED){
+  const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('ail-in');io.unobserve(e.target);}})},{threshold:.1,rootMargin:'0px 0px -6% 0px'});
+  const scan=()=>{
+    document.querySelectorAll('#root section > div > *').forEach((el)=>{
+      if(el.dataset.ailAuto||el.hasAttribute('data-reveal')||el.closest('[data-reveal]')||el.querySelector('[data-reveal]')||el.tagName==='CANVAS')return;
+      el.dataset.ailAuto='1';
+      const sibs=[...el.parentElement.children].filter(x=>x.dataset.ailAuto);
+      el.style.transitionDelay=(Math.min(sibs.indexOf(el),6)*80)+'ms';
+      el.classList.add('ail-auto');
+      io.observe(el);
+      setTimeout(()=>el.classList.add('ail-in'),700);
+    });
+  };
+  const root=document.getElementById('root');
+  new MutationObserver(()=>requestAnimationFrame(scan)).observe(root,{childList:true,subtree:true});
+  setTimeout(scan,120);
+}
+</script>
+</body></html>

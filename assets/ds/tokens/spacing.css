@@ -1,0 +1,20 @@
+:root{
+  --space-1:4px;
+  --space-2:8px;
+  --space-3:12px;
+  --space-4:16px;
+  --space-6:24px;
+  --space-8:32px;
+  --space-12:48px;
+  --space-16:64px;
+  --space-24:96px;
+  --space-32:128px;
+  --space-48:192px;
+  --space-64:256px;
+
+  --container-max:1280px;
+  --gutter:clamp(24px,5vw,80px); /* @kind spacing */
+  --section-y:120px;
+  --section-y-lg:192px;
+  --measure:66ch;
+}

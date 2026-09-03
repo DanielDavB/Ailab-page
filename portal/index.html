@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AiLab — Portal de clientes</title>
+<meta name="description" content="Portal de clientes de AiLab: avance de tu proyecto por fase, entregables, bitácora y soporte.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="../assets/ds/styles.css">
+<style>body{background:var(--bg)}#root{min-height:100vh}</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../assets/ds/ds-bundle.js"></script>
+<script src="data.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="js/PortalChrome.jsx"></script>
+<script type="text/babel" src="js/LoginScreen.jsx"></script>
+<script type="text/babel" src="js/DashboardScreen.jsx"></script>
+<script type="text/babel" src="js/PortalScreens.jsx"></script>
+<script type="text/babel">
+const { Toast } = window.AiLabDesignSystem_1d6ea7;
+
+/* Autenticación simulada del lado del cliente para este prototipo estático.
+   No hay backend: al "Entrar" se marca una sesión en sessionStorage para que
+   un refresh no te regrese al login. Sustituir por auth real (Supabase, etc.)
+   antes de manejar datos de clientes de verdad. */
+const SESSION_KEY = 'ailab_portal_session';
+
+function App(){
+  const [auth,setAuth]=React.useState(()=>sessionStorage.getItem(SESSION_KEY)==='1');
+  const [route,setRoute]=React.useState('dashboard');
+  const [pid,setPid]=React.useState('whatsapp');
+  const [toast,setToast]=React.useState(null);
+  const go=(r)=>{setRoute(r);window.scrollTo(0,0);};
+  const open=(id)=>{setPid(id);go('proyecto');};
+  const flash=(msg,detail)=>{setToast({msg,detail});setTimeout(()=>setToast(null),4000);};
+  const login=()=>{sessionStorage.setItem(SESSION_KEY,'1');setAuth(true);go('dashboard');};
+  const logout=()=>{sessionStorage.removeItem(SESSION_KEY);setAuth(false);setRoute('dashboard');};
+  if(!auth) return <LoginScreen notice onLogin={login} />;
+  return (<>
+    <PortalHeader route={route} onNavigate={go} onLogout={logout} />
+    {route==='dashboard' && <DashboardScreen onOpen={open} onNavigate={go} />}
+    {route==='proyecto' && <ProjectScreen id={pid} onBack={()=>go('dashboard')} onNavigate={go} />}
+    {route==='entregables' && <DeliverablesScreen />}
+    {route==='actividad' && <ActivityScreen />}
+    {route==='soporte' && <SupportScreen onSent={()=>{go('dashboard');flash('Ticket enviado','Te respondemos en horario hábil');}} />}
+    {route==='cuenta' && <AccountScreen onSaved={()=>flash('Cambios guardados','Datos de la empresa actualizados')} />}
+    {toast && <div style={{position:'fixed',right:24,bottom:24,zIndex:200}}><Toast tone="success" message={toast.msg} detail={toast.detail} onDismiss={()=>setToast(null)} /></div>}
+  </>);
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body></html>

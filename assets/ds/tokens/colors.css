@@ -1,0 +1,80 @@
+:root{
+  /* Orange — the single accent */
+  --orange-deep:#B34900;
+  --orange:#FF6700;
+  --orange-bright:#FF8A33;
+  --orange-light:#FFB380;
+  --orange-muted:rgba(255,103,0,.15);
+
+  /* Neutral scale, black to white */
+  --gray-1000:#0D0D0D;
+  --gray-950:#111111;
+  --gray-900:#1A1A1A;
+  --gray-800:#2A2A2A;
+  --gray-700:#3D3D3D;
+  --gray-600:#555555;
+  --gray-500:#7A7A7A;
+  --gray-400:#A8A8A8;
+  --gray-300:#D0D0D0;
+  --gray-200:#E5E5E5;
+  --gray-100:#F5F5F5;
+  --white:#FFFFFF;
+  --black:#0D0D0D;
+
+  /* Semantic surfaces */
+  --bg:#FFFFFF;
+  --bg-subtle:#F5F5F5;
+  --bg-inverse:#0D0D0D;
+  --surface-card:#FFFFFF;
+  --surface-card-inverse:#111111;
+  --surface-tint:rgba(255,103,0,.15);
+
+  /* Semantic text */
+  --text-strong:#0D0D0D;
+  --text-body:#3D3D3D;
+  --text-muted:#7A7A7A;
+  --text-inverse:#F5F5F5;
+  --text-inverse-muted:#A8A8A8;
+  --text-accent:#B34900;
+  --text-accent-inverse:#FF6700;
+
+  /* Semantic borders */
+  --border:#E5E5E5;
+  --border-strong:#A8A8A8;
+  --border-inverse:#2A2A2A;
+  --border-inverse-strong:#555555;
+  --border-accent:#FF6700;
+
+  /* Interactive */
+  --action-bg:#0D0D0D;
+  --action-fg:#FFFFFF;
+  --action-bg-hover:#2A2A2A;
+  --action-accent-bg:#FF6700;
+  --action-accent-bg-hover:#FF8A33;
+  --action-accent-fg:#0D0D0D;
+  --focus-ring:#FF6700;
+}
+
+[data-theme="dark"]{
+  --bg:#0D0D0D;
+  --bg-subtle:#111111;
+  --bg-inverse:#FFFFFF;
+  --surface-card:#111111;
+  --surface-card-inverse:#FFFFFF;
+
+  --text-strong:#F5F5F5;
+  --text-body:#D0D0D0;
+  --text-muted:#7A7A7A;
+  --text-inverse:#0D0D0D;
+  --text-inverse-muted:#555555;
+  --text-accent:#FF6700;
+
+  --border:#2A2A2A;
+  --border-strong:#555555;
+  --border-inverse:#E5E5E5;
+  --border-inverse-strong:#A8A8A8;
+
+  --action-bg:#F5F5F5;
+  --action-fg:#0D0D0D;
+  --action-bg-hover:#FFFFFF;
+}

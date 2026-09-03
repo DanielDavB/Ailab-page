@@ -1,0 +1,4 @@
+/* AiLab webfonts. No binaries were provided with the brand spec, so the three
+   families are loaded from Google Fonts (exact families named in the spec).
+   Replace this @import with local @font-face rules if licensed files arrive. */
+@import url("https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Outfit:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap");

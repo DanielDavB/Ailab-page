@@ -1,0 +1,48 @@
+:root{
+  --font-display:"Syne","Syne Fallback",system-ui,sans-serif;
+  --font-body:"Outfit","Outfit Fallback",system-ui,sans-serif;
+  --font-mono:"Space Mono","Space Mono Fallback",ui-monospace,monospace;
+
+  --text-11:11px;
+  --text-13:13px;
+  --text-16:16px;
+  --text-18:18px;
+  --text-20:20px;
+  --text-24:24px;
+  --text-32:32px;
+  --text-44:44px;
+  --text-60:60px;
+  --text-80:80px;
+  --text-112:112px;
+
+  --weight-light:300;
+  --weight-regular:400;
+  --weight-medium:500;
+  --weight-semibold:600;
+  --weight-bold:700;
+  --weight-black:800;
+
+  --leading-display:1.1;
+  --leading-snug:1.25;
+  --leading-body:1.65;
+
+  --tracking-tight:-0.03em;
+  --tracking-normal:0;
+  --tracking-wide:0.06em;
+  --tracking-widest:0.14em;
+
+  /* Composite roles */
+  --type-display-lg:var(--weight-black) var(--text-112)/var(--leading-display) var(--font-display);
+  --type-display:var(--weight-bold) var(--text-80)/var(--leading-display) var(--font-display);
+  --type-h1:var(--weight-bold) var(--text-60)/var(--leading-display) var(--font-display);
+  --type-h2:var(--weight-bold) var(--text-44)/var(--leading-display) var(--font-display);
+  --type-h3:var(--weight-bold) var(--text-32)/var(--leading-snug) var(--font-display);
+  --type-h4:var(--weight-bold) var(--text-24)/var(--leading-snug) var(--font-display);
+  --type-lead:var(--weight-light) var(--text-20)/var(--leading-body) var(--font-body);
+  --type-body:var(--weight-regular) var(--text-16)/var(--leading-body) var(--font-body);
+  --type-small:var(--weight-regular) var(--text-13)/var(--leading-body) var(--font-body);
+  --type-label:var(--weight-medium) var(--text-11)/1.2 var(--font-body);
+  --type-eyebrow:var(--weight-bold) var(--text-11)/1.2 var(--font-mono);
+  --type-mono:var(--weight-regular) var(--text-13)/1.5 var(--font-mono);
+  --type-stat:var(--weight-bold) var(--text-60)/1 var(--font-mono);
+}

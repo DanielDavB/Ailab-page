@@ -1,0 +1,8 @@
+:root{
+  --ease-brand:cubic-bezier(0.25,0,0,1); /* @kind other */
+  --duration-fast:150ms; /* @kind other */
+  --duration-base:180ms; /* @kind other */
+  --duration-slow:220ms; /* @kind other */
+  --transition-base:all var(--duration-base) var(--ease-brand);
+  --press-offset:1px;
+}
