@@ -9,8 +9,8 @@ const PORTAL_NAV = [
 
 function PortalWordmark({ size = 16 }) {
   return (
-    <span style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: size, letterSpacing: '-0.03em', textTransform: 'uppercase', color: '#FFFFFF' }}>
-      Ai<span style={{ color: 'var(--orange)' }}>Lab</span>
+    <span style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: size, letterSpacing: '-0.03em', textTransform: 'uppercase', whiteSpace: 'nowrap', color: '#FFFFFF' }}>
+      Ai <span style={{ color: 'var(--orange)' }}>Enterprise</span>
     </span>
   );
 }

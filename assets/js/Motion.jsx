@@ -1,4 +1,4 @@
-/* Motion helpers for the AiLab landing. Respects prefers-reduced-motion. */
+/* Motion helpers for the Ai Enterprise landing. Respects prefers-reduced-motion. */
 const REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /** Interactive AI/comms network: nodes drift, link when close, and react to the cursor. */
@@ -188,17 +188,83 @@ function Marquee({ items, speed = 38 }) {
   );
 }
 
-/** Wraps a card so it lifts and its border warms on hover. */
-function Lift({ children, y = 6 }) {
+/** Wraps a card so it lifts, tilts toward the cursor and shows an orange spotlight under it. */
+function Lift({ children, y = 6, tilt = 5 }) {
+  const ref = React.useRef(null);
   const [on, setOn] = React.useState(false);
+  const [p, setP] = React.useState({ x: 50, y: 50 });
+  const onMove = (e) => {
+    const r = ref.current.getBoundingClientRect();
+    setP({ x: ((e.clientX - r.left) / r.width) * 100, y: ((e.clientY - r.top) / r.height) * 100 });
+  };
+  const rx = on && !REDUCED ? ((50 - p.y) / 50) * tilt : 0;
+  const ry = on && !REDUCED ? ((p.x - 50) / 50) * tilt : 0;
   return (
-    <div onMouseEnter={() => setOn(true)} onMouseLeave={() => setOn(false)} style={{
-      transform: on && !REDUCED ? `translateY(-${y}px)` : 'none',
-      transition: 'transform .4s cubic-bezier(.2,.7,.2,1), box-shadow .4s ease',
-      boxShadow: on ? '0 18px 40px -24px rgba(13,13,13,.45)' : 'none',
+    <div ref={ref} onMouseEnter={() => setOn(true)} onMouseLeave={() => { setOn(false); setP({ x: 50, y: 50 }); }} onMouseMove={onMove} style={{
+      position: 'relative',
+      transform: on && !REDUCED ? `perspective(900px) translateY(-${y}px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)` : 'none',
+      transition: on ? 'transform .15s ease-out, box-shadow .4s ease' : 'transform .6s cubic-bezier(.2,.7,.2,1), box-shadow .4s ease',
+      boxShadow: on ? '0 24px 48px -26px rgba(13,13,13,.5)' : 'none',
       height: '100%',
-    }}>{children}</div>
+    }}>
+      {children}
+      <div aria-hidden="true" style={{
+        position: 'absolute', inset: 0, pointerEvents: 'none', opacity: on ? 1 : 0, transition: 'opacity .35s ease',
+        background: `radial-gradient(420px circle at ${p.x}% ${p.y}%, rgba(255,103,0,.13), transparent 45%)`,
+        boxShadow: on ? 'inset 0 0 0 1px rgba(255,103,0,.45)' : 'none',
+      }} />
+    </div>
   );
 }
 
-Object.assign(window, { NetworkBg, Reveal, RevealGroup, CountUp, Marquee, Lift, REDUCED });
+/** true once the element has scrolled into view (or right away with reduced motion). */
+function useInView(ref, { threshold = 0.25, once = true } = {}) {
+  const [inView, setInView] = React.useState(REDUCED);
+  React.useEffect(() => {
+    if (REDUCED || !ref.current) return;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) { setInView(true); if (once) io.disconnect(); }
+        else if (!once) setInView(false);
+      });
+    }, { threshold });
+    io.observe(ref.current);
+    return () => io.disconnect();
+  }, []);
+  return inView;
+}
+
+/** Terminal-style line that types, holds, deletes and cycles through `words`. */
+function TypeCycle({ prefix = '> ', words, typeMs = 55, holdMs = 1600, color = 'var(--orange)' }) {
+  const [i, setI] = React.useState(0);
+  const [n, setN] = React.useState(REDUCED ? words[0].length : 0);
+  const [del, setDel] = React.useState(false);
+  React.useEffect(() => {
+    if (REDUCED) return;
+    const w = words[i];
+    let t;
+    if (!del && n < w.length) t = setTimeout(() => setN(n + 1), typeMs);
+    else if (!del) t = setTimeout(() => setDel(true), holdMs);
+    else if (n > 0) t = setTimeout(() => setN(n - 1), typeMs / 2);
+    else { setDel(false); setI((i + 1) % words.length); }
+    return () => clearTimeout(t);
+  }, [n, del, i]);
+  return (
+    <span style={{ font: 'var(--type-mono)', fontSize: 'var(--text-13)', letterSpacing: 'var(--tracking-wide)', color: 'var(--gray-500)' }}>
+      {prefix}<span style={{ color }}>{words[i].slice(0, n)}</span><span className="ail-caret" style={{ background: color }} />
+    </span>
+  );
+}
+
+/** Soft orange aurora blobs drifting behind a dark section. */
+function AuroraBg() {
+  return (
+    <div aria-hidden="true" data-reveal="1" style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
+      <div className="ail-blob" style={{ width: 620, height: 620, left: '-12%', top: '-30%', background: 'radial-gradient(circle, rgba(255,103,0,.22), transparent 62%)' }} />
+      <div className="ail-blob ail-blob-b" style={{ width: 520, height: 520, right: '-10%', top: '20%', background: 'radial-gradient(circle, rgba(255,138,51,.14), transparent 62%)' }} />
+      <div className="ail-blob ail-blob-c" style={{ width: 420, height: 420, left: '35%', bottom: '-35%', background: 'radial-gradient(circle, rgba(60,232,176,.07), transparent 62%)' }} />
+    </div>
+  );
+}
+
+Object.assign(window, { NetworkBg, Reveal, RevealGroup, CountUp, Marquee, Lift, useInView, TypeCycle, AuroraBg, REDUCED });

@@ -1,4 +1,4 @@
-/* Contenido placeholder realista para el sitio de AiLab. Reemplazar por datos reales antes de publicar. */
+/* Contenido placeholder realista para el sitio de Ai Enterprise. Reemplazar por datos reales antes de publicar. */
 window.AILAB_CONTENT = {
   stats: [
     { value: '+120', label: 'Horas ahorradas al mes', note: 'Suma de los procesos que operan hoy' },

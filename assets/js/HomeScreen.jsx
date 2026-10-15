@@ -8,8 +8,11 @@ function HomeScreen({ onNavigate, onCta, onCase, onLogin }) {
   return (
     <div>
       {/* HERO */}
-      <Section tone="dark" bg={<NetworkBg />} style={{ padding: '140px 0 0', borderBottom: '1px solid var(--gray-800)' }}>
+      <Section tone="dark" bg={<><AuroraBg /><NetworkBg /></>} style={{ padding: '140px 0 0', borderBottom: '1px solid var(--gray-800)' }}>
         <Reveal from="left"><Eyebrow tone="inverse">Consultoría IA · Durango, México · LATAM</Eyebrow></Reveal>
+        <Reveal from="left" delay={60} style={{ marginTop: 16 }}>
+          <TypeCycle prefix="> automatizando: " words={['cotizaciones', 'pedidos de WhatsApp', 'conciliación contable', 'recordatorios de citas', 'reportes semanales']} />
+        </Reveal>
         <div style={{ marginTop: 32, display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: 80, alignItems: 'end' }}>
           <Reveal delay={80}><StrokeHeading lines={[['Automatizamos tu ', { stroke: 'negocio' }], ['con IA que sí opera']]} /></Reveal>
           <Reveal delay={220} style={{ paddingBottom: 12 }}>
@@ -64,6 +67,12 @@ function HomeScreen({ onNavigate, onCta, onCase, onLogin }) {
             </Lift></Reveal>
           ))}
         </div>
+      </Section>
+
+      {/* DEMO EN VIVO */}
+      <Section tone="dark" bg={<AuroraBg />}>
+        <Reveal><SectionHead tone="dark" eyebrow="En vivo" title="Así opera una automatización" lead="Un pedido real de WhatsApp, de punta a punta. Cada paso suma una pieza al sistema hasta dejarlo operando solo." /></Reveal>
+        <FlowDemo />
       </Section>
 
       {/* CASOS */}
@@ -135,30 +144,7 @@ function HomeScreen({ onNavigate, onCta, onCase, onLogin }) {
               <Button variant="primary" onClick={onLogin} iconLeft={<Icon name="lock" size={16} />}>Entrar al portal</Button>
             </div>
           </Reveal>
-          <Reveal from="right" delay={140}>
-          <Card padding="0" tone="inverse" style={{ overflow: 'hidden' }}>
-            <div style={{ padding: '14px 20px', borderBottom: '1px solid var(--gray-800)', display: 'flex', alignItems: 'center', gap: 10, font: 'var(--type-mono)', fontSize: 'var(--text-11)', letterSpacing: 'var(--tracking-wide)', color: 'var(--gray-500)' }}>
-              <Icon name="lock" size={12} /> portal.ailabschool.com
-            </div>
-            <div style={{ padding: 28 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 20, color: '#F5F5F5' }}>Agente de WhatsApp</span>
-                <Badge tone="accent">Fase 03 · Construcción</Badge>
-              </div>
-              <div style={{ marginTop: 20, height: 4, background: 'var(--gray-800)' }}><div style={{ width: '62%', height: '100%', background: 'var(--orange)' }}></div></div>
-              <div style={{ marginTop: 10, display: 'flex', justifyContent: 'space-between', font: 'var(--type-mono)', fontSize: 'var(--text-11)', letterSpacing: 'var(--tracking-wide)', color: 'var(--gray-500)' }}>
-                <span>62% DE AVANCE</span><span>PRÓXIMA ENTREGA · 12 SEP</span>
-              </div>
-              <ul style={{ listStyle: 'none', margin: '28px 0 0', padding: '20px 0 0', borderTop: '1px solid var(--gray-800)', display: 'flex', flexDirection: 'column', gap: 12 }}>
-                {['Se activó el agente en número de pruebas', 'Se entregó manual de uso v1', 'Reunión de seguimiento agendada'].map((t) => (
-                  <li key={t} style={{ display: 'flex', gap: 10, font: 'var(--type-small)', color: 'var(--gray-400)' }}>
-                    <Icon name="circle-check" size={14} style={{ color: 'var(--orange)', flex: 'none', marginTop: 3 }} />{t}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </Card>
-          </Reveal>
+          <Reveal from="right" delay={140}><PortalPreview /></Reveal>
         </div>
       </Section>
 
@@ -197,4 +183,37 @@ function HomeScreen({ onNavigate, onCta, onCase, onLogin }) {
   );
 }
 
-Object.assign(window, { HomeScreen });
+/** Vista previa del portal: la barra se llena, el % cuenta y la bitácora entra con checks que "saltan". */
+function PortalPreview() {
+  const ref = React.useRef(null);
+  const inView = useInView(ref, { threshold: 0.4 });
+  return (
+    <div ref={ref}>
+      <Card padding="0" tone="inverse" style={{ overflow: 'hidden' }}>
+        <div style={{ padding: '14px 20px', borderBottom: '1px solid var(--gray-800)', display: 'flex', alignItems: 'center', gap: 10, font: 'var(--type-mono)', fontSize: 'var(--text-11)', letterSpacing: 'var(--tracking-wide)', color: 'var(--gray-500)' }}>
+          <span className="ail-dot" style={{ background: '#FF5F57' }} /><span className="ail-dot" style={{ background: '#FEBC2E' }} /><span className="ail-dot" style={{ background: '#28C840' }} />
+          <span style={{ marginLeft: 8, display: 'inline-flex', alignItems: 'center', gap: 8 }}><Icon name="lock" size={12} /> portal.ailabschool.com</span>
+        </div>
+        <div style={{ padding: 28 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 20, color: '#F5F5F5' }}>Agente de WhatsApp</span>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}><span className="ail-ping" style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--orange)' }} /><Badge tone="accent">Fase 03 · Construcción</Badge></span>
+          </div>
+          <div style={{ marginTop: 20, height: 4, background: 'var(--gray-800)' }}><div className="ail-bar-fill" style={{ width: inView ? '62%' : '0%' }}></div></div>
+          <div style={{ marginTop: 10, display: 'flex', justifyContent: 'space-between', font: 'var(--type-mono)', fontSize: 'var(--text-11)', letterSpacing: 'var(--tracking-wide)', color: 'var(--gray-500)' }}>
+            <span>{inView ? <CountUp value="62%" duration={1600} /> : '0%'} DE AVANCE</span><span>PRÓXIMA ENTREGA · 12 SEP</span>
+          </div>
+          <ul style={{ listStyle: 'none', margin: '28px 0 0', padding: '20px 0 0', borderTop: '1px solid var(--gray-800)', display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {['Se activó el agente en número de pruebas', 'Se entregó manual de uso v1', 'Reunión de seguimiento agendada'].map((t, i) => (
+              <li key={t} style={{ display: 'flex', gap: 10, font: 'var(--type-small)', color: 'var(--gray-400)', opacity: inView ? 1 : 0, transform: inView ? 'none' : 'translateX(16px)', transition: `opacity .5s ease ${600 + i * 220}ms, transform .6s cubic-bezier(.2,.7,.2,1) ${600 + i * 220}ms` }}>
+                <span style={{ display: 'inline-flex', flex: 'none', marginTop: 3, animation: inView ? `ail-pop-k .5s cubic-bezier(.2,.9,.3,1.3) ${800 + i * 220}ms both` : 'none' }}><Icon name="circle-check" size={14} style={{ color: '#3CE8B0' }} /></span>{t}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Card>
+    </div>
+  );
+}
+
+Object.assign(window, { HomeScreen, PortalPreview });

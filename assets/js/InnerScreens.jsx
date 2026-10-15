@@ -144,7 +144,7 @@ function AboutScreen({ onCta }) {
 
 function PrivacyScreen() {
   const blocks = [
-    ['Responsable', 'AiLab / AiLabSchool, con domicilio en Durango, México, es responsable del tratamiento de tus datos personales.'],
+    ['Responsable', 'Ai Enterprise / AiLabSchool, con domicilio en Durango, México, es responsable del tratamiento de tus datos personales.'],
     ['Datos que recabamos', 'Nombre, empresa, cargo, correo electrónico y teléfono, proporcionados por ti al llenar el formulario de diagnóstico o al usar el portal de clientes.'],
     ['Finalidades', 'Contactarte para agendar el diagnóstico, dar seguimiento a tu proyecto, enviarte entregables y, si lo autorizas, compartirte contenido de AiLabSchool.'],
     ['Transferencias', 'No vendemos ni compartimos tus datos con terceros para fines comerciales. Utilizamos proveedores de infraestructura y comunicación que los procesan por nuestra cuenta.'],

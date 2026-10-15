@@ -1,4 +1,4 @@
-# AiLab — Sitio web + Portal de clientes
+# Ai Enterprise — Sitio web + Portal de clientes
 
 Sitio estático (sin build step) para **ailabschool.com**: la marketing website es la
 puerta principal y el **portal de clientes** vive aparte, detrás de un login, en `/portal`.
@@ -30,7 +30,8 @@ ailab-website/
 │   │   ├── tokens/         ← colors, typography, spacing, shape, motion, fonts, base
 │   │   └── ds-bundle.js    ← Button, Card, Badge, Input, Dialog, Toast, Tabs, etc.
 │   └── js/                 ← Pantallas del sitio público (JSX, se compilan en el navegador)
-│       ├── Motion.jsx      ← Animaciones (reveal, marquee, contador, fondo de red)
+│       ├── Motion.jsx      ← Animaciones (reveal, marquee, contador, fondo de red, aurora, typewriter, tilt + spotlight)
+│       ├── FlowDemo.jsx    ← Demo animada "en vivo": pasos + diagrama acumulativo tipo terminal
 │       ├── Chrome.jsx      ← Header, Footer, Section, SectionHead
 │       ├── HomeScreen.jsx
 │       ├── ServicesScreen.jsx
@@ -81,7 +82,7 @@ ailab-website/
 - **Tipografías**: Syne / Outfit / Space Mono cargan de Google Fonts
   (`assets/ds/tokens/fonts.css`). Si llegan archivos con licencia, cambiar el `@import`
   por `@font-face` locales.
-- **Logo**: no hay archivo de logo; el wordmark "Ai**Lab**" está tipografiado (Syne 800).
+- **Logo**: no hay archivo de logo; el wordmark "Ai **Enterprise**" está tipografiado (Syne 800).
 - **Formularios** (contacto, agendar diagnóstico, ticket de soporte, cuenta): no envían a
   ningún backend todavía — solo actualizan estado local y muestran un `Toast`. Conectar a
   donde corresponda (correo, CRM, base de datos) antes de producción.

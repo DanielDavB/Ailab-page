@@ -10,8 +10,8 @@ const NAV = [
 
 function Wordmark({ color = '#FFFFFF', size = 20 }) {
   return (
-    <span style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: size, letterSpacing: '-0.03em', textTransform: 'uppercase', color }}>
-      Ai<span style={{ color: 'var(--orange)' }}>Lab</span>
+    <span style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: size, letterSpacing: '-0.03em', textTransform: 'uppercase', whiteSpace: 'nowrap', color }}>
+      Ai <span style={{ color: 'var(--orange)' }}>Enterprise</span>
     </span>
   );
 }
@@ -75,7 +75,7 @@ function Footer({ onNavigate }) {
           {col('Contacto', [['hola@ailabschool.com', null], ['Agendar diagnóstico', 'contacto'], ['Portal de clientes', 'login'], ['LinkedIn', null]])}
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: 24, font: 'var(--type-mono)', fontSize: 'var(--text-11)', letterSpacing: 'var(--tracking-wide)', color: 'var(--gray-600)' }}>
-          <span>© 2026 AILAB · AILABSCHOOL.COM</span>
+          <span>© 2026 AI ENTERPRISE · AILABSCHOOL.COM</span>
           <span style={{ display: 'flex', gap: 16 }}>
             <button onClick={() => onNavigate('privacidad')} style={{ background: 'none', border: 'none', color: 'var(--gray-600)', font: 'inherit', letterSpacing: 'inherit', cursor: 'pointer' }}>AVISO DE PRIVACIDAD</button>
             <span>DURANGO · REMOTO</span>
@@ -109,15 +109,20 @@ function SectionHead({ eyebrow, title, lead, tone = 'light', action }) {
   );
 }
 
-/** ALL-CAPS display line with one word rendered as orange outline. */
+/** ALL-CAPS display line with one word rendered as orange outline. Words rise in one by one. */
 function StrokeHeading({ lines, size = 'var(--text-80)', color = '#FFFFFF' }) {
+  let k = 0;
+  const word = (txt, key, style) => {
+    const d = (k++) * 70;
+    return <span key={key} className="ail-word" style={{ animationDelay: d + 'ms', ...style }}>{txt}</span>;
+  };
   return (
     <h1 style={{ fontSize: size, lineHeight: 1.02, letterSpacing: '-0.03em', textTransform: 'uppercase', color, margin: 0 }}>
       {lines.map((line, i) => (
         <span key={i} style={{ display: 'block' }}>
-          {line.map((part, j) => typeof part === 'string' ? part : (
-            <span key={j} style={{ color: 'transparent', WebkitTextStroke: '2px var(--orange)' }}>{part.stroke}</span>
-          ))}
+          {line.map((part, j) => typeof part === 'string'
+            ? part.split(/(\s+)/).map((w, x) => /^\s+$/.test(w) || !w ? w : word(w, j + '-' + x))
+            : word(part.stroke, j, { color: 'transparent', WebkitTextStroke: '2px var(--orange)' }))}
         </span>
       ))}
     </h1>
@@ -132,21 +137,42 @@ const PHASES = [
   { n: '05', title: 'Acompañamiento', body: 'Ajustes, nuevas oportunidades y soporte continuo.', output: 'Mejora basada en uso real' },
 ];
 
+/** Five phases. On scroll-in a progress rail draws across them; then a highlight walks through each phase in a loop. */
 function Roadmap({ tone = 'light' }) {
   const dark = tone === 'dark';
+  const ref = React.useRef(null);
+  const inView = useInView(ref, { threshold: 0.3 });
+  const [cur, setCur] = React.useState(-1);
+  React.useEffect(() => {
+    if (!inView || REDUCED) return;
+    let i = -1, iv;
+    const start = setTimeout(() => {
+      const tick = () => { i = (i + 1) % PHASES.length; setCur(i); };
+      tick();
+      iv = setInterval(tick, 2200);
+    }, PHASES.length * 180 + 500);
+    return () => { clearTimeout(start); clearInterval(iv); };
+  }, [inView]);
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: 1, background: dark ? 'var(--gray-800)' : 'var(--border)' }}>
-      {PHASES.map((p) => (
-        <div key={p.n} style={{ background: dark ? '#0D0D0D' : 'var(--bg)', padding: '32px 24px', display: 'flex', flexDirection: 'column', gap: 16, minHeight: 280 }}>
-          <div style={{ font: 'var(--type-mono)', fontWeight: 700, fontSize: 'var(--text-32)', color: 'var(--orange)' }}>{p.n}</div>
-          <h4 style={{ fontSize: 'var(--text-18)', color: dark ? '#F5F5F5' : 'var(--text-strong)' }}>{p.title}</h4>
-          <p style={{ font: 'var(--type-small)', color: dark ? 'var(--gray-400)' : 'var(--text-body)', marginBottom: 'auto' }}>{p.body}</p>
-          <div style={{ paddingTop: 16, borderTop: `1px solid ${dark ? 'var(--gray-800)' : 'var(--border)'}` }}>
-            <div style={{ font: 'var(--type-mono)', fontSize: 'var(--text-11)', letterSpacing: 'var(--tracking-wide)', textTransform: 'uppercase', color: 'var(--text-muted)' }}>Output</div>
-            <div style={{ marginTop: 6, font: 'var(--type-small)', fontWeight: 500, color: dark ? '#F5F5F5' : 'var(--text-strong)' }}>{p.output}</div>
+    <div ref={ref} style={{ display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: 1, background: dark ? 'var(--gray-800)' : 'var(--border)' }}>
+      {PHASES.map((p, i) => {
+        const on = cur === i;
+        return (
+          <div key={p.n} style={{ position: 'relative', overflow: 'hidden', background: on ? (dark ? '#161210' : '#FFF6F0') : (dark ? '#0D0D0D' : 'var(--bg)'), padding: '32px 24px', display: 'flex', flexDirection: 'column', gap: 16, minHeight: 280, transition: 'background .6s ease' }}>
+            <span aria-hidden="true" style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'var(--orange)', transformOrigin: 'left', transform: inView ? 'scaleX(1)' : 'scaleX(0)', transition: `transform .7s cubic-bezier(.2,.7,.2,1) ${i * 180}ms` }} />
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div style={{ font: 'var(--type-mono)', fontWeight: 700, fontSize: 'var(--text-32)', color: 'var(--orange)', opacity: inView ? 1 : 0, transform: inView ? 'none' : 'translateY(14px)', transition: `opacity .6s ease ${i * 180 + 200}ms, transform .6s cubic-bezier(.2,.7,.2,1) ${i * 180 + 200}ms` }}>{p.n}</div>
+              <span aria-hidden="true" className={on ? 'ail-ping' : ''} style={{ width: 8, height: 8, borderRadius: '50%', background: on ? 'var(--orange)' : (dark ? 'var(--gray-700)' : 'var(--border-strong)'), transition: 'background .4s ease' }} />
+            </div>
+            <h4 style={{ fontSize: 'var(--text-18)', color: dark ? '#F5F5F5' : 'var(--text-strong)' }}>{p.title}</h4>
+            <p style={{ font: 'var(--type-small)', color: dark ? 'var(--gray-400)' : 'var(--text-body)', marginBottom: 'auto' }}>{p.body}</p>
+            <div style={{ paddingTop: 16, borderTop: `1px solid ${on ? 'var(--orange)' : (dark ? 'var(--gray-800)' : 'var(--border)')}`, transition: 'border-color .4s ease' }}>
+              <div style={{ font: 'var(--type-mono)', fontSize: 'var(--text-11)', letterSpacing: 'var(--tracking-wide)', textTransform: 'uppercase', color: on ? 'var(--orange)' : 'var(--text-muted)', transition: 'color .4s ease' }}>Output</div>
+              <div style={{ marginTop: 6, font: 'var(--type-small)', fontWeight: 500, color: dark ? '#F5F5F5' : 'var(--text-strong)' }}>{p.output}</div>
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }
