@@ -8,24 +8,24 @@ function HomeScreen({ onNavigate, onCta, onCase, onLogin }) {
   return (
     <div>
       {/* HERO */}
-      <Section tone="dark" bg={<><AuroraBg /><NetworkBg /></>} style={{ padding: '140px 0 0', borderBottom: '1px solid var(--gray-800)' }}>
+      <Section className="ail-hero" tone="dark" bg={<><AuroraBg /><NetworkBg /></>} style={{ padding: '140px 0 0', borderBottom: '1px solid var(--gray-800)' }}>
         <Reveal from="left"><Eyebrow tone="inverse">Consultoría IA · Durango, México · LATAM</Eyebrow></Reveal>
         <Reveal from="left" delay={60} style={{ marginTop: 16 }}>
           <TypeCycle prefix="> automatizando: " words={['cotizaciones', 'pedidos de WhatsApp', 'conciliación contable', 'recordatorios de citas', 'reportes semanales']} />
         </Reveal>
-        <div style={{ marginTop: 32, display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: 80, alignItems: 'end' }}>
+        <div className="ail-g" style={{ marginTop: 32, display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: 80, alignItems: 'end' }}>
           <Reveal delay={80}><StrokeHeading lines={[['Automatizamos tu ', { stroke: 'negocio' }], ['con IA que sí opera']]} /></Reveal>
           <Reveal delay={220} style={{ paddingBottom: 12 }}>
             <p style={{ font: 'var(--type-lead)', color: 'var(--gray-400)' }}>
               Consultoría y automatización con IA para pequeñas y medianas empresas. Te quitamos el trabajo repetitivo esta misma semana — y le enseñamos a tu equipo a operarlo.
             </p>
-            <div style={{ display: 'flex', gap: 16, marginTop: 32 }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, marginTop: 32 }}>
               <Button variant="accent" size="lg" onClick={onCta} iconRight={<Icon name="arrow-right" size={20} />}>Agendar diagnóstico</Button>
               <Button variant="secondary" size="lg" onClick={() => onNavigate('casos')} style={{ color: '#F5F5F5', borderColor: 'var(--gray-600)' }}>Ver proyectos</Button>
             </div>
           </Reveal>
         </div>
-        <div style={{ marginTop: 96, borderTop: '1px solid var(--gray-800)', display: 'grid', gridTemplateColumns: 'repeat(3,1fr)' }}>
+        <div className="ail-g ail-stats" style={{ marginTop: 96, borderTop: '1px solid var(--gray-800)', display: 'grid', gridTemplateColumns: 'repeat(3,1fr)' }}>
           {C.stats.map((s, i) => (
             <Reveal key={s.label} delay={i * 120} style={{ padding: '40px 40px 40px 0', borderLeft: i ? '1px solid var(--gray-800)' : 'none', paddingLeft: i ? 40 : 0 }}>
               <Stat tone="inverse" value={<CountUp value={s.value} />} label={s.label} note={s.note} />
@@ -36,7 +36,7 @@ function HomeScreen({ onNavigate, onCta, onCase, onLogin }) {
 
       {/* INDUSTRIAS */}
       <div style={{ background: '#0D0D0D', borderBottom: '1px solid var(--gray-800)', padding: '28px 0', overflow: 'hidden' }}>
-        <div style={{ maxWidth: 'var(--container-max)', margin: '0 auto', padding: '0 var(--gutter)', display: 'grid', gridTemplateColumns: 'auto 1fr', alignItems: 'center', gap: 40 }}>
+        <div className="ail-g" style={{ maxWidth: 'var(--container-max)', margin: '0 auto', padding: '0 var(--gutter)', display: 'grid', gridTemplateColumns: 'auto 1fr', alignItems: 'center', gap: 40 }}>
           <span style={{ font: 'var(--type-mono)', fontSize: 'var(--text-11)', letterSpacing: 'var(--tracking-widest)', textTransform: 'uppercase', color: 'var(--gray-600)', whiteSpace: 'nowrap' }}>Industrias con las que trabajamos</span>
           <Marquee items={C.industries} />
         </div>
@@ -46,7 +46,7 @@ function HomeScreen({ onNavigate, onCta, onCase, onLogin }) {
       <Section>
         <Reveal><SectionHead eyebrow="Qué hacemos" title="Cinco servicios, un solo objetivo" lead="Que dejes de pagar horas de tu equipo por trabajo que una máquina hace mejor."
           action={<Button variant="secondary" onClick={() => onNavigate('servicios')} iconRight={<Icon name="arrow-right" size={16} />}>Ver detalle</Button>} /></Reveal>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 24, marginTop: 64 }}>
+        <div className="ail-g" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 24, marginTop: 64 }}>
           {C.services.map((s, i) => (
             <Reveal key={s.n} delay={(i % 3) * 110} from="scale"><Lift>
             <Card interactive padding="32px" onClick={() => onNavigate('servicios')} style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
@@ -79,10 +79,10 @@ function HomeScreen({ onNavigate, onCta, onCase, onLogin }) {
       <Section tone="subtle">
         <Reveal><SectionHead eyebrow="Casos" title="Resultados medidos en horas"
           action={<Button variant="secondary" onClick={() => onNavigate('casos')} iconRight={<Icon name="arrow-right" size={16} />}>Todos los casos</Button>} /></Reveal>
-        <div style={{ display: 'flex', gap: 8, marginTop: 40 }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 40 }}>
           {areas.map((a) => <Tag key={a} selected={area === a} onSelect={() => setArea(a)}>{a}</Tag>)}
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 24, marginTop: 40 }}>
+        <div className="ail-g" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 24, marginTop: 40 }}>
           {cases.slice(0, 3).map((c, i) => (
             <Reveal key={c.slug} delay={i * 110}><Lift>
             <Card interactive padding="0" onClick={() => onCase(c.slug)} style={{ overflow: 'hidden', height: '100%' }}>
@@ -118,7 +118,7 @@ function HomeScreen({ onNavigate, onCta, onCase, onLogin }) {
       <Section>
         <Reveal><SectionHead eyebrow="AiLabSchool" title="No solo automatizamos: formamos a tu equipo" lead="Es la diferencia entre rentar una solución y quedártela. Tu gente aprende a operar y ajustar lo que construimos."
           action={<Button variant="secondary" onClick={() => onNavigate('academia')} iconRight={<Icon name="arrow-right" size={16} />}>Ver academia</Button>} /></Reveal>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 24, marginTop: 64 }}>
+        <div className="ail-g" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 24, marginTop: 64 }}>
           {C.courses.map((c, i) => (
             <Reveal key={c.title} delay={i * 110} from="scale"><Lift>
             <Card interactive padding="32px" onClick={() => onNavigate('academia')} style={{ height: '100%' }}>
@@ -133,7 +133,7 @@ function HomeScreen({ onNavigate, onCta, onCase, onLogin }) {
 
       {/* PORTAL */}
       <Section tone="subtle" style={{ padding: '96px 0' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }}>
+        <div className="ail-g" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }}>
           <Reveal from="left">
             <Eyebrow>Transparencia</Eyebrow>
             <h2 style={{ marginTop: 16, fontSize: 'var(--text-44)' }}>Sigue el avance de tu proyecto en tiempo real</h2>
@@ -151,7 +151,7 @@ function HomeScreen({ onNavigate, onCta, onCase, onLogin }) {
       {/* EQUIPO */}
       <Section>
         <Reveal><SectionHead eyebrow="Equipo" title="Trabajas con personas, no con un proveedor" /></Reveal>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 24, marginTop: 64, maxWidth: 860 }}>
+        <div className="ail-g" style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 24, marginTop: 64, maxWidth: 860 }}>
           {C.team.map((m, i) => (
             <Reveal key={m.name} delay={i * 140}>
             <Card padding="32px" style={{ display: 'flex', gap: 24, alignItems: 'flex-start', height: '100%' }}>
@@ -169,7 +169,7 @@ function HomeScreen({ onNavigate, onCta, onCase, onLogin }) {
 
       {/* CTA */}
       <Section tone="dark" style={{ padding: '96px 0' }}>
-        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 48 }}>
+        <div className="ail-stack" style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 48 }}>
           <Reveal from="left">
             <Eyebrow tone="inverse">Siguiente paso</Eyebrow>
             <StrokeHeading size="var(--text-60)" lines={[['90 minutos'], ['y un ', { stroke: 'plan' }]]} />
@@ -195,7 +195,7 @@ function PortalPreview() {
           <span style={{ marginLeft: 8, display: 'inline-flex', alignItems: 'center', gap: 8 }}><Icon name="lock" size={12} /> portal.ailabschool.com</span>
         </div>
         <div style={{ padding: 28 }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'space-between', alignItems: 'center' }}>
             <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 20, color: '#F5F5F5' }}>Agente de WhatsApp</span>
             <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}><span className="ail-ping" style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--orange)' }} /><Badge tone="accent">Fase 03 · Construcción</Badge></span>
           </div>

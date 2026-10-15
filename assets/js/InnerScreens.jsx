@@ -14,7 +14,7 @@ function MethodScreen({ onCta }) {
       </Section>
       <Section>
         <Roadmap />
-        <div style={{ marginTop: 96, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'start' }}>
+        <div className="ail-g" style={{ marginTop: 96, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'start' }}>
           <div>
             <Eyebrow>Cómo se siente</Eyebrow>
             <h2 style={{ marginTop: 16, fontSize: 'var(--text-32)' }}>Entregas cada semana, no cada trimestre</h2>
@@ -33,7 +33,7 @@ function MethodScreen({ onCta }) {
         </div>
       </Section>
       <Section tone="subtle" style={{ padding: '80px 0' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 48 }}>
+        <div className="ail-stack" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 48 }}>
           <h2 style={{ fontSize: 'var(--text-32)', maxWidth: '24ch' }}>Empecemos por el diagnóstico. Sin costo la primera sesión.</h2>
           <Button variant="accent" size="lg" onClick={onCta} iconRight={<Icon name="arrow-right" size={20} />}>Agendar diagnóstico</Button>
         </div>
@@ -57,7 +57,7 @@ function AcademyScreen({ onCta }) {
       </Section>
       <Section>
         <SectionHead eyebrow="Programa" title="Cursos y talleres" lead="Se imparten en tu empresa o en línea. También abiertos a público general." />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 24, marginTop: 64 }}>
+        <div className="ail-g" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 24, marginTop: 64 }}>
           {C.courses.map((c) => (
             <Card key={c.title} padding="32px" style={{ display: 'flex', flexDirection: 'column' }}>
               <Tag>{c.format}</Tag>
@@ -69,7 +69,7 @@ function AcademyScreen({ onCta }) {
         </div>
       </Section>
       <Section tone="subtle">
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80 }}>
+        <div className="ail-g" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80 }}>
           <div>
             <Eyebrow>Formato</Eyebrow>
             <h2 style={{ marginTop: 16, fontSize: 'var(--text-32)' }}>Capacitación incluida en cada proyecto</h2>
@@ -108,7 +108,7 @@ function AboutScreen({ onCta }) {
         </p>
       </Section>
       <Section>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 24, maxWidth: 860 }}>
+        <div className="ail-g" style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 24, maxWidth: 860 }}>
           {C.team.map((m) => (
             <Card key={m.name} padding="32px">
               <div style={{ width: 88, height: 88, background: 'var(--gray-1000)', color: '#F5F5F5', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: 28 }}>{m.initials}</div>
@@ -121,7 +121,7 @@ function AboutScreen({ onCta }) {
         </div>
       </Section>
       <Section tone="subtle" style={{ padding: '80px 0' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 48 }}>
+        <div className="ail-g" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 48 }}>
           {[['Cómo cobramos', 'Por proyecto con alcance cerrado, no por hora. Sabes el total antes de empezar.'],
             ['Con quién trabajamos', 'PyMEs de 5 a 60 personas en retail, servicios, salud y distribución.'],
             ['Dónde estamos', 'Durango, México. Trabajamos en remoto con toda LATAM y presencial en la región.']].map(([t, b]) => (
@@ -133,7 +133,7 @@ function AboutScreen({ onCta }) {
         </div>
       </Section>
       <Section style={{ padding: '80px 0' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 48 }}>
+        <div className="ail-stack" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 48 }}>
           <h2 style={{ fontSize: 'var(--text-32)', maxWidth: '26ch' }}>¿Platicamos 90 minutos sobre tu operación?</h2>
           <Button variant="accent" size="lg" onClick={onCta} iconRight={<Icon name="arrow-right" size={20} />}>Agendar diagnóstico</Button>
         </div>

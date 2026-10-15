@@ -81,7 +81,7 @@ function SupportScreen({ onSent }) {
   return (
     <PortalPage>
       <PageHead eyebrow="Soporte" title="¿En qué te ayudamos?" lead="Respondemos en horario hábil, normalmente el mismo día." />
-      <div style={{ marginTop: 48, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'start' }}>
+      <div className="ail-g" style={{ marginTop: 48, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'start' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           {[['message-circle', 'WhatsApp', 'Lo más rápido para dudas de operación.', 'Abrir WhatsApp'],
             ['mail', 'Correo', 'hola@ailabschool.com · respuesta en menos de 24h', 'Escribir correo'],
@@ -119,7 +119,7 @@ function AccountScreen({ onSaved }) {
     <PortalPage>
       <PageHead eyebrow="Cuenta" title={D.client.name} lead="Datos de la empresa y accesos al portal."
         action={<Button variant="accent" onClick={onSaved}>Guardar cambios</Button>} />
-      <div style={{ marginTop: 48, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'start' }}>
+      <div className="ail-g" style={{ marginTop: 48, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'start' }}>
         <div>
           <Eyebrow>Datos de la empresa</Eyebrow>
           <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', gap: 20 }}>

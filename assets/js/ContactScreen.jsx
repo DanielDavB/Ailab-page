@@ -12,7 +12,7 @@ function ContactScreen({ onSubmit }) {
   };
   return (
     <Section style={{ padding: '96px 0 120px' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 96, alignItems: 'start' }}>
+      <div className="ail-g" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 96, alignItems: 'start' }}>
         <div>
           <SectionHead eyebrow="Agenda tu diagnóstico" title="90 minutos, sin costo, sin venta dura" lead="Revisamos tus procesos actuales y te devolvemos un plan priorizado en menos de 48 horas." />
           <div style={{ display: 'flex', flexDirection: 'column', gap: 24, marginTop: 48, paddingTop: 48, borderTop: '1px solid var(--border)' }}>
@@ -29,7 +29,7 @@ function ContactScreen({ onSubmit }) {
         </div>
         <Card padding="40px">
           <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+            <div className="ail-g" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
               <Input label="Nombre" placeholder="Ana Ruiz" required />
               <Input label="Empresa" placeholder="Distribuidora del Norte" />
             </div>

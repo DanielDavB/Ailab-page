@@ -1,0 +1,97 @@
+/* Vista móvil / tablet. Los layouts usan estilos inline pensados para escritorio,
+   así que aquí se sobreescriben (con !important) a partir de clases utilitarias:
+   .ail-g      grid que colapsa a 1 columna
+   .ail-g2     grid de 4 columnas que pasa a 2
+   .ail-stack  fila flex (título + acción) que se apila
+   .ail-section, .ail-hero, .ail-ppage … paddings por pantalla */
+
+/* Menú móvil: oculto en escritorio */
+.ail-burger{display:none}
+.ail-mnav{display:none}
+
+@media (max-width:1100px){
+  .ail-head{gap:24px!important}
+  .ail-head nav{gap:18px!important}
+}
+
+@media (max-width:960px){
+  :root{
+    --text-80:56px;
+    --text-60:46px;
+    --text-44:36px;
+  }
+  .ail-section{padding-top:88px!important;padding-bottom:88px!important}
+  .ail-hero{padding-top:96px!important;padding-bottom:0!important}
+
+  /* Header del sitio → hamburguesa */
+  .ail-desk{display:none!important}
+  .ail-head{justify-content:space-between;height:64px!important}
+  .ail-burger{display:inline-flex;flex-direction:column;justify-content:center;gap:5px;width:44px;height:44px;margin-right:-10px;padding:10px;background:none;border:none;cursor:pointer}
+  .ail-burger span{display:block;height:2px;width:24px;background:#F5F5F5;transition:transform .35s cubic-bezier(.2,.7,.2,1),opacity .2s ease}
+  .ail-burger.is-open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .ail-burger.is-open span:nth-child(2){opacity:0}
+  .ail-burger.is-open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);background:var(--orange)}
+  .ail-mnav{display:flex;flex-direction:column;position:absolute;left:0;right:0;top:100%;height:calc(100vh - 64px);height:calc(100dvh - 64px);overflow-y:auto;padding:16px var(--gutter) 32px;background:#0D0D0D;border-top:1px solid var(--gray-800);visibility:hidden;opacity:0;transform:translateY(-8px);transition:opacity .3s ease,transform .35s cubic-bezier(.2,.7,.2,1),visibility 0s linear .35s}
+  .ail-mnav.is-open{visibility:visible;opacity:1;transform:none;transition:opacity .3s ease,transform .35s cubic-bezier(.2,.7,.2,1),visibility 0s}
+  .ail-mnav > button{display:flex;align-items:baseline;gap:16px;width:100%;padding:18px 0;background:none;border:none;border-bottom:1px solid var(--gray-900);text-align:left;cursor:pointer;font-family:var(--font-display);font-weight:800;font-size:28px;letter-spacing:-0.02em;text-transform:uppercase;opacity:0;transform:translateX(-14px);transition:opacity .35s ease,transform .45s cubic-bezier(.2,.7,.2,1),color .2s ease}
+  .ail-mnav.is-open > button{opacity:1;transform:none}
+  .ail-mnav-n{font:700 11px var(--font-mono);letter-spacing:.08em;color:var(--orange)}
+  .ail-mnav-actions{display:flex;flex-direction:column;gap:12px;margin-top:28px;opacity:0;transform:translateY(10px);transition:opacity .35s ease,transform .45s cubic-bezier(.2,.7,.2,1)}
+  .ail-mnav.is-open .ail-mnav-actions{opacity:1;transform:none}
+
+  /* Grids y filas */
+  .ail-g{grid-template-columns:minmax(0,1fr)!important;gap:24px!important}
+  .ail-g2{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .ail-stack{flex-direction:column!important;align-items:flex-start!important;gap:24px!important}
+  .ail-g > *{min-height:0!important}
+  .ail-roadmap{gap:1px!important}
+  .ail-wrap{gap:32px 48px!important;margin-top:56px!important}
+
+  /* Stats del hero: una debajo de otra */
+  .ail-stats{margin-top:56px!important}
+  .ail-stats > *{border-left:none!important;padding:24px 0!important;border-bottom:1px solid var(--gray-800)}
+  .ail-stats > *:last-child{border-bottom:none}
+
+  /* Footer */
+  .ail-foot-bar{flex-direction:column;gap:12px}
+  .ail-foot-bar > span:last-child{flex-wrap:wrap}
+
+  /* Portal */
+  .ail-phead{flex-wrap:wrap;height:auto!important;padding:12px 20px 0!important;gap:12px 20px!important;justify-content:space-between}
+  .ail-pnav{order:3;width:100%;margin:0 -20px!important;padding:0 20px;overflow-x:auto;scrollbar-width:none;gap:24px!important;border-top:1px solid var(--gray-900);height:48px;align-items:center}
+  .ail-pnav::-webkit-scrollbar{display:none}
+  .ail-ppage{padding:32px 20px 64px!important}
+  .ail-login{grid-template-columns:minmax(0,1fr)!important;gap:0!important}
+  .ail-login-brand{padding:32px 24px!important;border-right:none!important;border-bottom:1px solid var(--gray-800)}
+  .ail-login-brand > div{margin:40px 0 32px!important}
+  .ail-login-form{padding:40px 24px 56px!important}
+}
+
+@media (max-width:640px){
+  :root{
+    --text-80:40px;
+    --text-60:36px;
+    --text-44:30px;
+    --text-32:24px;
+  }
+  .ail-section{padding-top:64px!important;padding-bottom:64px!important}
+  .ail-hero{padding-top:56px!important}
+  .ail-g2{grid-template-columns:minmax(0,1fr)!important}
+  .ail-pwho{display:none}
+  .ail-login-brand ul{display:none!important}
+
+  /* Botones grandes del hero/CTA a todo lo ancho */
+  .ail-hero button{flex:1 1 220px}
+
+  /* Demo "En vivo": stage primero, lista compacta debajo */
+  .ail-flow{margin-top:40px!important;gap:16px!important}
+  .ail-flow-item{padding:10px 12px!important;gap:12px!important}
+  .ail-flow-sub{display:none!important}
+  .ail-flow-active .ail-flow-sub{display:block!important;white-space:normal!important}
+  .ail-flow-bar{padding:10px 12px!important}
+  .ail-flow-svg{padding:4px 2px!important}
+  .ail-flow-foot{padding:10px 12px!important}
+}
+
+/* Red de seguridad: nada provoca scroll horizontal */
+html,body{overflow-x:clip}

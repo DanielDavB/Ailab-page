@@ -17,10 +17,10 @@ function CasesScreen({ onCase }) {
         </p>
       </Section>
       <Section>
-        <div style={{ display: 'flex', gap: 8 }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
           {areas.map((a) => <Tag key={a} selected={area === a} onSelect={() => setArea(a)}>{a}</Tag>)}
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 24, marginTop: 40 }}>
+        <div className="ail-g" style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 24, marginTop: 40 }}>
           {list.map((c) => (
             <Card key={c.slug} interactive padding="0" onClick={() => onCase(c.slug)} style={{ overflow: 'hidden' }}>
               <div style={{ height: 200, background: 'var(--gray-1000)', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
@@ -69,7 +69,7 @@ function CaseDetailScreen({ slug, onBack, onCta }) {
         <p style={{ marginTop: 24, font: 'var(--type-lead)', color: 'var(--gray-400)', maxWidth: '54ch' }}>{c.body}</p>
       </Section>
       <Section>
-        <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: 80, alignItems: 'start' }}>
+        <div className="ail-g" style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: 80, alignItems: 'start' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
             {block('El problema', c.problem)}
             {block('La solución', c.solution)}
