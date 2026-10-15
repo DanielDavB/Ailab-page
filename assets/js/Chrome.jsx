@@ -17,11 +17,14 @@ function Wordmark({ color = '#FFFFFF', size = 20 }) {
 }
 
 function Header({ route, onNavigate, onCta, onLogin }) {
+  const [open, setOpen] = React.useState(false);
+  const nav = (fn) => () => { setOpen(false); fn(); };
+  React.useEffect(() => { setOpen(false); }, [route]);
   return (
     <header style={{ position: 'sticky', top: 0, zIndex: 20, background: '#0D0D0D', borderBottom: '1px solid var(--gray-800)' }}>
-      <div style={{ maxWidth: 'var(--container-max)', margin: '0 auto', padding: '0 var(--gutter)', height: 72, display: 'flex', alignItems: 'center', gap: 40 }}>
-        <a href="#" onClick={(e) => { e.preventDefault(); onNavigate('home'); }} style={{ border: 'none', display: 'inline-flex' }}><Wordmark /></a>
-        <nav style={{ display: 'flex', gap: 28, marginRight: 'auto' }}>
+      <div className="ail-head" style={{ maxWidth: 'var(--container-max)', margin: '0 auto', padding: '0 var(--gutter)', height: 72, display: 'flex', alignItems: 'center', gap: 40 }}>
+        <a href="#" onClick={(e) => { e.preventDefault(); setOpen(false); onNavigate('home'); }} style={{ border: 'none', display: 'inline-flex' }}><Wordmark /></a>
+        <nav className="ail-desk" style={{ display: 'flex', gap: 28, marginRight: 'auto' }}>
           {NAV.map((n) => (
             <button key={n.id} onClick={() => onNavigate(n.id)} style={{
               background: 'none', border: 'none', cursor: 'pointer', padding: '4px 0', whiteSpace: 'nowrap',
@@ -36,11 +39,25 @@ function Header({ route, onNavigate, onCta, onLogin }) {
             >{n.label}</button>
           ))}
         </nav>
-        <button onClick={onLogin} style={{
+        <button className="ail-desk" onClick={onLogin} style={{
           background: 'none', border: 'none', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 8, whiteSpace: 'nowrap',
           fontFamily: 'var(--font-body)', fontSize: 'var(--text-11)', fontWeight: 600, letterSpacing: 'var(--tracking-widest)', textTransform: 'uppercase', color: 'var(--gray-300)',
         }}><Icon name="lock" size={14} />Iniciar sesión</button>
-        <Button variant="accent" size="sm" onClick={onCta} style={{ whiteSpace: 'nowrap' }}>Agendar diagnóstico</Button>
+        <span className="ail-desk"><Button variant="accent" size="sm" onClick={onCta} style={{ whiteSpace: 'nowrap' }}>Agendar diagnóstico</Button></span>
+        <button className={'ail-burger' + (open ? ' is-open' : '')} onClick={() => setOpen(!open)} aria-label={open ? 'Cerrar menú' : 'Abrir menú'} aria-expanded={open}>
+          <span /><span /><span />
+        </button>
+      </div>
+      <div className={'ail-mnav' + (open ? ' is-open' : '')} aria-hidden={!open}>
+        {NAV.map((n, i) => (
+          <button key={n.id} onClick={nav(() => onNavigate(n.id))} tabIndex={open ? 0 : -1} style={{ transitionDelay: open ? (60 + i * 40) + 'ms' : '0ms', color: route === n.id ? 'var(--orange)' : '#F5F5F5' }}>
+            <span className="ail-mnav-n">{String(i + 1).padStart(2, '0')}</span>{n.label}
+          </button>
+        ))}
+        <div className="ail-mnav-actions" style={{ transitionDelay: open ? '280ms' : '0ms' }}>
+          <Button variant="accent" onClick={nav(onCta)} style={{ width: '100%', justifyContent: 'center' }}>Agendar diagnóstico</Button>
+          <Button variant="secondary" onClick={nav(onLogin)} iconLeft={<Icon name="lock" size={14} />} style={{ width: '100%', justifyContent: 'center', color: '#F5F5F5', borderColor: 'var(--gray-600)' }}>Iniciar sesión</Button>
+        </div>
       </div>
     </header>
   );
@@ -62,7 +79,7 @@ function Footer({ onNavigate }) {
   return (
     <footer style={{ background: '#0D0D0D', color: 'var(--gray-400)', padding: '64px 0 32px' }}>
       <div style={{ maxWidth: 'var(--container-max)', margin: '0 auto', padding: '0 var(--gutter)' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr', gap: 48, paddingBottom: 48, borderBottom: '1px solid var(--gray-800)' }}>
+        <div className="ail-g" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr', gap: 48, paddingBottom: 48, borderBottom: '1px solid var(--gray-800)' }}>
           <div>
             <Wordmark />
             <p style={{ marginTop: 16, font: 'var(--type-body)', color: 'var(--gray-400)', maxWidth: '34ch' }}>
@@ -74,7 +91,7 @@ function Footer({ onNavigate }) {
           {col('Empresa', [['Casos', 'casos'], ['Metodología', 'metodologia'], ['Academia', 'academia'], ['Equipo', 'nosotros']])}
           {col('Contacto', [['hola@ailabschool.com', null], ['Agendar diagnóstico', 'contacto'], ['Portal de clientes', 'login'], ['LinkedIn', null]])}
         </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: 24, font: 'var(--type-mono)', fontSize: 'var(--text-11)', letterSpacing: 'var(--tracking-wide)', color: 'var(--gray-600)' }}>
+        <div className="ail-foot-bar" style={{ display: 'flex', justifyContent: 'space-between', paddingTop: 24, font: 'var(--type-mono)', fontSize: 'var(--text-11)', letterSpacing: 'var(--tracking-wide)', color: 'var(--gray-600)' }}>
           <span>© 2026 AI ENTERPRISE · AILABSCHOOL.COM</span>
           <span style={{ display: 'flex', gap: 16 }}>
             <button onClick={() => onNavigate('privacidad')} style={{ background: 'none', border: 'none', color: 'var(--gray-600)', font: 'inherit', letterSpacing: 'inherit', cursor: 'pointer' }}>AVISO DE PRIVACIDAD</button>
@@ -86,9 +103,9 @@ function Footer({ onNavigate }) {
   );
 }
 
-function Section({ children, tone = 'light', style, bg }) {
+function Section({ children, tone = 'light', style, bg, className = '' }) {
   return (
-    <section style={{ background: tone === 'dark' ? '#0D0D0D' : (tone === 'subtle' ? 'var(--bg-subtle)' : 'var(--bg)'), padding: '120px 0', ...(bg ? { position: 'relative', overflow: 'hidden' } : null), ...style }}>
+    <section className={('ail-section ' + className).trim()} style={{ background: tone === 'dark' ? '#0D0D0D' : (tone === 'subtle' ? 'var(--bg-subtle)' : 'var(--bg)'), padding: '120px 0', ...(bg ? { position: 'relative', overflow: 'hidden' } : null), ...style }}>
       {bg}
       <div style={{ position: 'relative', maxWidth: 'var(--container-max)', margin: '0 auto', padding: '0 var(--gutter)' }}>{children}</div>
     </section>
@@ -98,7 +115,7 @@ function Section({ children, tone = 'light', style, bg }) {
 function SectionHead({ eyebrow, title, lead, tone = 'light', action }) {
   const dark = tone === 'dark';
   return (
-    <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 48 }}>
+    <div className="ail-stack" style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 48 }}>
       <div style={{ maxWidth: '52ch' }}>
         <Eyebrow tone={dark ? 'inverse' : 'accent'}>{eyebrow}</Eyebrow>
         <h2 style={{ marginTop: 16, fontSize: 'var(--text-44)', color: dark ? '#F5F5F5' : 'var(--text-strong)' }}>{title}</h2>
@@ -154,7 +171,7 @@ function Roadmap({ tone = 'light' }) {
     return () => { clearTimeout(start); clearInterval(iv); };
   }, [inView]);
   return (
-    <div ref={ref} style={{ display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: 1, background: dark ? 'var(--gray-800)' : 'var(--border)' }}>
+    <div ref={ref} className="ail-g ail-roadmap" style={{ display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: 1, background: dark ? 'var(--gray-800)' : 'var(--border)' }}>
       {PHASES.map((p, i) => {
         const on = cur === i;
         return (

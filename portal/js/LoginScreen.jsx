@@ -6,8 +6,8 @@ function LoginScreen({ onLogin, notice }) {
   const [sent, setSent] = React.useState(false);
   const submit = (e) => { e.preventDefault(); if (mode === 'magic') { setSent(true); } else { onLogin(); } };
   return (
-    <div style={{ minHeight: '100vh', background: '#0D0D0D', display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
-      <div style={{ padding: '48px 64px', display: 'flex', flexDirection: 'column', borderRight: '1px solid var(--gray-800)' }}>
+    <div className="ail-g ail-login" style={{ minHeight: '100vh', background: '#0D0D0D', display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+      <div className="ail-login-brand" style={{ padding: '48px 64px', display: 'flex', flexDirection: 'column', borderRight: '1px solid var(--gray-800)' }}>
         <PortalWordmark size={20} />
         <div style={{ margin: 'auto 0', maxWidth: 420 }}>
           <h1 style={{ fontSize: 'var(--text-44)', color: '#FFFFFF', textTransform: 'uppercase', letterSpacing: '-0.03em', lineHeight: 1.05 }}>
@@ -26,7 +26,7 @@ function LoginScreen({ onLogin, notice }) {
         </div>
         <span style={{ font: 'var(--type-mono)', fontSize: 'var(--text-11)', letterSpacing: 'var(--tracking-wide)', textTransform: 'uppercase', color: 'var(--gray-600)' }}>portal.ailabschool.com</span>
       </div>
-      <div style={{ background: 'var(--bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 64 }}>
+      <div className="ail-login-form" style={{ background: 'var(--bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 64 }}>
         <div style={{ width: '100%', maxWidth: 400 }}>
           {notice && (
             <div style={{ marginBottom: 24, padding: '12px 16px', border: '1px solid var(--orange)', background: 'var(--orange-muted)', font: 'var(--type-small)', color: 'var(--text-strong)' }}>

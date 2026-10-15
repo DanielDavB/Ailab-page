@@ -20,13 +20,13 @@ function PortalHeader({ route, onNavigate, onLogout }) {
   const [menu, setMenu] = React.useState(false);
   return (
     <header style={{ position: 'sticky', top: 0, zIndex: 20, background: '#0D0D0D', borderBottom: '1px solid var(--gray-800)' }}>
-      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 40px', height: 64, display: 'flex', alignItems: 'center', gap: 40 }}>
+      <div className="ail-phead" style={{ maxWidth: 1200, margin: '0 auto', padding: '0 40px', height: 64, display: 'flex', alignItems: 'center', gap: 40 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <PortalWordmark />
           <span style={{ width: 1, height: 16, background: 'var(--gray-700)' }}></span>
           <span style={{ font: 'var(--type-mono)', fontSize: 'var(--text-11)', letterSpacing: 'var(--tracking-wide)', textTransform: 'uppercase', color: 'var(--gray-500)' }}>Portal</span>
         </div>
-        <nav style={{ display: 'flex', gap: 28, marginRight: 'auto' }}>
+        <nav className="ail-pnav" style={{ display: 'flex', gap: 28, marginRight: 'auto' }}>
           {PORTAL_NAV.map((n) => (
             <button key={n.id} onClick={() => onNavigate(n.id)} style={{
               background: 'none', border: 'none', cursor: 'pointer', padding: '4px 0', whiteSpace: 'nowrap',
@@ -39,7 +39,7 @@ function PortalHeader({ route, onNavigate, onLogout }) {
         </nav>
         <div style={{ position: 'relative' }}>
           <button onClick={() => setMenu(!menu)} style={{ display: 'flex', alignItems: 'center', gap: 12, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
-            <span style={{ textAlign: 'right' }}>
+            <span className="ail-pwho" style={{ textAlign: 'right' }}>
               <span style={{ display: 'block', font: 'var(--type-small)', fontWeight: 600, color: '#F5F5F5' }}>{D.client.contact}</span>
               <span style={{ display: 'block', font: 'var(--type-mono)', fontSize: 'var(--text-11)', color: 'var(--gray-500)' }}>{D.client.name}</span>
             </span>
@@ -59,12 +59,12 @@ function PortalHeader({ route, onNavigate, onLogout }) {
 }
 
 function PortalPage({ children }) {
-  return <div style={{ maxWidth: 1200, margin: '0 auto', padding: '48px 40px 96px' }}>{children}</div>;
+  return <div className="ail-ppage" style={{ maxWidth: 1200, margin: '0 auto', padding: '48px 40px 96px' }}>{children}</div>;
 }
 
 function PageHead({ eyebrow, title, lead, action }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 40, paddingBottom: 32, borderBottom: '1px solid var(--border)' }}>
+    <div className="ail-stack" style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 40, paddingBottom: 32, borderBottom: '1px solid var(--border)' }}>
       <div>
         <Eyebrow>{eyebrow}</Eyebrow>
         <h1 style={{ marginTop: 12, fontSize: 'var(--text-44)' }}>{title}</h1>

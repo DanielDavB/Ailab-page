@@ -24,7 +24,7 @@ function ServicesScreen({ onCta }) {
       <Section style={{ padding: '96px 0' }}>
         <div style={{ display: 'grid', gap: 1, background: 'var(--border)' }}>
           {C.services.map((s) => (
-            <div key={s.n} style={{ background: 'var(--bg)', display: 'grid', gridTemplateColumns: '120px 1.2fr 1fr', gap: 48, padding: '48px 0' }}>
+            <div key={s.n} className="ail-g" style={{ background: 'var(--bg)', display: 'grid', gridTemplateColumns: '120px 1.2fr 1fr', gap: 48, padding: '48px 0' }}>
               <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, fontSize: 60, lineHeight: 1, color: 'transparent', WebkitTextStroke: '1px var(--border-strong)' }}>{s.n}</div>
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -52,10 +52,10 @@ function ServicesScreen({ onCta }) {
       <Section tone="subtle" style={{ padding: '96px 0 64px' }}>
         <SectionHead eyebrow="Precios" title="Alcances claros, sin retainers eternos" lead="Los precios son en pesos mexicanos e incluyen implementación. Sin costo por licencia oculta." />
         <div style={{ marginTop: 32 }}><Switch label="Ver con mantenimiento anual" checked={annual} onChange={setAnnual} /></div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 24, marginTop: 48 }}>
+        <div className="ail-g" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 24, marginTop: 48 }}>
           {PLANS.map((p) => (
             <Card key={p.name} padding="32px" tone={p.featured ? 'inverse' : 'default'} style={p.featured ? { borderColor: 'var(--orange)' } : undefined}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'space-between', alignItems: 'center' }}>
                 <h3 style={{ fontSize: 'var(--text-24)', color: p.featured ? '#F5F5F5' : 'var(--text-strong)' }}>{p.name}</h3>
                 {p.featured && <Badge tone="solid">Más pedido</Badge>}
               </div>
@@ -79,7 +79,7 @@ function ServicesScreen({ onCta }) {
 
       <Section>
         <SectionHead eyebrow="Cómo trabajamos" title="Qué entregamos en cada proyecto" />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 24, marginTop: 64 }}>
+        <div className="ail-g" style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 24, marginTop: 64 }}>
           {[['file-text', 'Mapa del proceso', 'Un documento con el flujo actual, el flujo propuesto y las horas que libera.'],
             ['plug', 'Integraciones probadas', 'Cada conexión queda documentada con su usuario, su alerta y su plan B.'],
             ['gauge', 'Tablero de resultados', 'Horas ahorradas, tareas ejecutadas y errores evitados, semana a semana.'],
@@ -90,7 +90,7 @@ function ServicesScreen({ onCta }) {
             </Card>
           ))}
         </div>
-        <div style={{ display: 'flex', gap: 96, marginTop: 96, paddingTop: 48, borderTop: '1px solid var(--border)' }}>
+        <div className="ail-wrap" style={{ display: 'flex', flexWrap: 'wrap', gap: 96, marginTop: 96, paddingTop: 48, borderTop: '1px solid var(--border)' }}>
           <Stat hero value="&lt; 48h" label="Por flujo implementado" />
           <Stat value="30 días" label="Soporte incluido" />
           <Stat value="2 h" label="Sesión de traspaso" />

@@ -8,7 +8,7 @@ function DashboardScreen({ onOpen, onNavigate }) {
       <PageHead eyebrow={D.client.name} title={'Hola, ' + D.client.contact.split(' ')[0]} lead="Esto es lo que está pasando con tus proyectos ahora mismo."
         action={<Button variant="secondary" onClick={() => onNavigate('soporte')} iconLeft={<Icon name="message-circle" size={16} />}>Soporte</Button>} />
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 1, background: 'var(--border)', marginTop: 32, border: '1px solid var(--border)' }}>
+      <div className="ail-g2" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 1, background: 'var(--border)', marginTop: 32, border: '1px solid var(--border)' }}>
         {[['2', 'Proyectos activos'], [String(totalDeliverables), 'Entregables recibidos'], ['12 sep', 'Próxima entrega'], ['1', 'Pendiente de tu lado']].map(([v, l]) => (
           <div key={l} style={{ background: 'var(--bg)', padding: 24 }}>
             <div style={{ font: 'var(--type-mono)', fontWeight: 700, fontSize: 'var(--text-32)', color: 'var(--text-strong)' }}>{v}</div>
@@ -20,7 +20,7 @@ function DashboardScreen({ onOpen, onNavigate }) {
       <div style={{ marginTop: 48, display: 'flex', flexDirection: 'column', gap: 24 }}>
         {D.projects.map((p) => (
           <Card key={p.id} interactive padding="32px" onClick={() => onOpen(p.id)}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr', gap: 48, alignItems: 'start' }}>
+            <div className="ail-g" style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr', gap: 48, alignItems: 'start' }}>
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                   <h2 style={{ fontSize: 'var(--text-24)' }}>{p.name}</h2>
@@ -51,7 +51,7 @@ function DashboardScreen({ onOpen, onNavigate }) {
         ))}
       </div>
 
-      <div style={{ marginTop: 64, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48 }}>
+      <div className="ail-g" style={{ marginTop: 64, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48 }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: 16, borderBottom: '1px solid var(--border)' }}>
             <Eyebrow>Actividad reciente</Eyebrow>
@@ -92,7 +92,7 @@ function ProjectScreen({ id, onBack, onNavigate }) {
       <button onClick={onBack} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 24, font: 'var(--type-mono)', fontSize: 'var(--text-11)', letterSpacing: 'var(--tracking-wide)', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
         <Icon name="arrow-left" size={14} /> Mis proyectos
       </button>
-      <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 40, paddingBottom: 32, borderBottom: '1px solid var(--border)' }}>
+      <div className="ail-stack" style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 40, paddingBottom: 32, borderBottom: '1px solid var(--border)' }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <Eyebrow>Fase {String(p.phase).padStart(2, '0')} · {D.phases[p.phase - 1]}</Eyebrow>
@@ -115,7 +115,7 @@ function ProjectScreen({ id, onBack, onNavigate }) {
       </div>
 
       {tab === 'Avance' && (
-        <div style={{ marginTop: 48, display: 'grid', gridTemplateColumns: '1.3fr 1fr', gap: 64, alignItems: 'start' }}>
+        <div className="ail-g" style={{ marginTop: 48, display: 'grid', gridTemplateColumns: '1.3fr 1fr', gap: 64, alignItems: 'start' }}>
           <PhaseTimeline project={p} />
           <Card padding="28px" tone="subtle">
             <Eyebrow marker={false}>Entregables de esta fase</Eyebrow>

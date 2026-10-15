@@ -11,24 +11,30 @@ const FLOW_STEPS = [
   { cmd: 'reporte.diario()', title: 'Reporte al equipo', sub: 'Resumen y alertas sin captura manual', tag: 'control', node: 'rep', link: 'erp-rep' },
 ];
 
-/* Layout fijo del diagrama final (viewBox 1000 x 400). Ningún nodo se mueve entre pasos. */
-const NW = 180, NH = 78;
-const FLOW_NODES = {
-  wa: { x: 20, y: 161, label: 'WhatsApp', meta: 'cliente · 09:42' },
-  agent: { x: 290, y: 161, label: 'Agente IA', meta: 'LLM + reglas' },
-  cat: { x: 290, y: 20, label: 'Catálogo', meta: 'Sheets · precios' },
-  quote: { x: 560, y: 161, label: 'Cotización', meta: 'PDF + mensaje' },
-  erp: { x: 800, y: 161, label: 'ERP', meta: 'pedido #4821' },
-  rep: { x: 560, y: 302, label: 'Reporte', meta: 'diario · alertas' },
+/* Layout fijo del diagrama final. Ningún nodo se mueve entre pasos.
+   'wide' es horizontal (escritorio); 'narrow' apila el mismo sistema en vertical para celular. */
+const NH = 78;
+const FLOW_META = {
+  wa: { label: 'WhatsApp', meta: 'cliente · 09:42' },
+  agent: { label: 'Agente IA', meta: 'LLM + reglas' },
+  cat: { label: 'Catálogo', meta: 'Sheets · precios' },
+  quote: { label: 'Cotización', meta: 'PDF + mensaje' },
+  erp: { label: 'ERP', meta: 'pedido #4821' },
+  rep: { label: 'Reporte', meta: 'diario · alertas' },
 };
-
-/* Bordes reales de cada nodo, para anclar las conexiones. */
-const edge = (id, side) => {
-  const n = FLOW_NODES[id];
-  return {
-    right: [n.x + NW, n.y + NH / 2], left: [n.x, n.y + NH / 2],
-    top: [n.x + NW / 2, n.y], bottom: [n.x + NW / 2, n.y + NH],
-  }[side];
+const LAYOUT_SPEC = {
+  wide: {
+    w: 1000, h: 400, nw: 180,
+    pos: { wa: [20, 161], agent: [290, 161], cat: [290, 20], quote: [560, 161], erp: [800, 161], rep: [560, 302] },
+    links: { 'wa-agent': ['wa', 'right', 'agent', 'left'], 'agent-cat': ['agent', 'top', 'cat', 'bottom'], 'agent-quote': ['agent', 'right', 'quote', 'left'], 'quote-erp': ['quote', 'right', 'erp', 'left'], 'erp-rep': ['erp', 'bottom', 'rep', 'right', 'vh'] },
+    summary: [560, 20, 420],
+  },
+  narrow: {
+    w: 420, h: 600, nw: 170,
+    pos: { wa: [20, 20], agent: [20, 150], cat: [230, 150], quote: [20, 280], erp: [230, 280], rep: [230, 410] },
+    links: { 'wa-agent': ['wa', 'bottom', 'agent', 'top'], 'agent-cat': ['agent', 'right', 'cat', 'left'], 'agent-quote': ['agent', 'bottom', 'quote', 'top'], 'quote-erp': ['quote', 'right', 'erp', 'left'], 'erp-rep': ['erp', 'bottom', 'rep', 'top'] },
+    summary: [20, 510, 380],
+  },
 };
 
 /* Conector ortogonal con esquina redondeada. mode 'vh' = vertical primero, 'hv' = horizontal primero. */
@@ -40,13 +46,31 @@ function elbowPath([x1, y1], [x2, y2], mode = 'hv', r = 14) {
     : `M${x1} ${y1} L${x2 - sx * r} ${y1} Q${x2} ${y1} ${x2} ${y1 + sy * r} L${x2} ${y2}`;
 }
 
-const FLOW_LINKS = {
-  'wa-agent': elbowPath(edge('wa', 'right'), edge('agent', 'left')),
-  'agent-cat': elbowPath(edge('agent', 'top'), edge('cat', 'bottom')),
-  'agent-quote': elbowPath(edge('agent', 'right'), edge('quote', 'left')),
-  'quote-erp': elbowPath(edge('quote', 'right'), edge('erp', 'left')),
-  'erp-rep': elbowPath(edge('erp', 'bottom'), edge('rep', 'right'), 'vh'),
-};
+/* Resuelve nodos (x/y/w) y conexiones ancladas a los bordes reales de cada nodo. */
+function buildLayout(spec) {
+  const nodes = {};
+  Object.entries(spec.pos).forEach(([id, [x, y]]) => { nodes[id] = { x, y, ...FLOW_META[id] }; });
+  const edge = (id, side) => {
+    const n = nodes[id], W = spec.nw;
+    return { right: [n.x + W, n.y + NH / 2], left: [n.x, n.y + NH / 2], top: [n.x + W / 2, n.y], bottom: [n.x + W / 2, n.y + NH] }[side];
+  };
+  const links = {};
+  Object.entries(spec.links).forEach(([id, [a, sa, b, sb, mode]]) => { links[id] = elbowPath(edge(a, sa), edge(b, sb), mode); });
+  return { ...spec, nodes, links };
+}
+const FLOW_LAYOUTS = { wide: buildLayout(LAYOUT_SPEC.wide), narrow: buildLayout(LAYOUT_SPEC.narrow) };
+
+function useNarrow(query = '(max-width: 640px)') {
+  const mq = window.matchMedia ? window.matchMedia(query) : null;
+  const [on, setOn] = React.useState(mq ? mq.matches : false);
+  React.useEffect(() => {
+    if (!mq) return;
+    const fn = (e) => setOn(e.matches);
+    mq.addEventListener ? mq.addEventListener('change', fn) : mq.addListener(fn);
+    return () => (mq.removeEventListener ? mq.removeEventListener('change', fn) : mq.removeListener(fn));
+  }, []);
+  return on;
+}
 
 const ORANGE = '#FF6700', MINT = '#3CE8B0';
 const STEP_MS = 4200, FINAL_MS = 8000;
@@ -61,6 +85,9 @@ function FlowDemo() {
   const [typed, setTyped] = React.useState(REDUCED ? FLOW_STEPS[last].cmd.length : 0);
   const [complete, setComplete] = React.useState(REDUCED);
   const playing = inView && !paused && !REDUCED;
+  const L = FLOW_LAYOUTS[useNarrow() ? 'narrow' : 'wide'];
+  const NW = L.nw;
+  const [sx, sy, sw] = L.summary;
 
   /* Typing effect del comando del paso activo. */
   React.useEffect(() => {
@@ -135,13 +162,13 @@ function FlowDemo() {
           </div>
         </div>
 
-        <svg viewBox="0 0 1000 400" className="ail-flow-svg" role="img" aria-label="Diagrama del flujo: WhatsApp, agente de IA, catálogo, cotización, ERP y reporte">
+        <svg viewBox={`0 0 ${L.w} ${L.h}`} className="ail-flow-svg" role="img" aria-label="Diagrama del flujo: WhatsApp, agente de IA, catálogo, cotización, ERP y reporte">
           <defs>
             <pattern id="ail-grid" width="25" height="25" patternUnits="userSpaceOnUse">
               <circle cx="1" cy="1" r="1" fill="rgba(255,255,255,.06)" />
             </pattern>
           </defs>
-          <rect width="1000" height="400" fill="url(#ail-grid)" />
+          <rect width={L.w} height={L.h} fill="url(#ail-grid)" />
 
           {/* Conexiones: se dibujan en vivo con stroke-dashoffset y llevan un paquete de datos viajando */}
           {FLOW_STEPS.map((s, i) => {
@@ -150,7 +177,7 @@ function FlowDemo() {
             const color = st === 'active' ? ORANGE : MINT;
             return (
               <g key={s.link}>
-                <path id={'ail-l-' + s.link} d={FLOW_LINKS[s.link]} pathLength="1" fill="none"
+                <path id={'ail-l-' + s.link} d={L.links[s.link]} pathLength="1" fill="none"
                   stroke={color} strokeWidth="2" strokeLinecap="round"
                   style={{
                     strokeDasharray: 1, strokeDashoffset: st === 'hidden' ? 1 : 0,
@@ -170,7 +197,7 @@ function FlowDemo() {
 
           {/* Nodos: aparecen con stagger después de su conexión */}
           {FLOW_STEPS.map((s, i) => {
-            const n = FLOW_NODES[s.node];
+            const n = L.nodes[s.node];
             const st = stateOf(i);
             const fresh = i === cur && !complete;
             const d = fresh && s.link ? 450 : 0;
@@ -195,9 +222,9 @@ function FlowDemo() {
 
           {/* Paso final: el sistema completo, con su resultado */}
           <g style={{ opacity: complete ? 1 : 0, transform: complete ? 'none' : 'translateY(-8px)', transition: 'opacity .6s ease, transform .6s ease' }}>
-            <rect x="560" y="20" width="420" height="78" rx="6" fill="rgba(60,232,176,.08)" stroke={MINT} strokeWidth="1" strokeDasharray="4 4" />
-            <text x="580" y="46" className="ail-flow-t-num" fill={MINT}>✓ SISTEMA COMPLETO · OPERANDO 24/7</text>
-            <text x="580" y="78" className="ail-flow-t-label" fill="#F5F5F5">−40 h/mes · errores &lt;1%</text>
+            <rect x={sx} y={sy} width={sw} height="78" rx="6" fill="rgba(60,232,176,.08)" stroke={MINT} strokeWidth="1" strokeDasharray="4 4" />
+            <text x={sx + 20} y={sy + 26} className="ail-flow-t-num" fill={MINT}>✓ SISTEMA COMPLETO · OPERANDO 24/7</text>
+            <text x={sx + 20} y={sy + 58} className="ail-flow-t-label" fill="#F5F5F5">−40 h/mes · errores &lt;1%</text>
           </g>
         </svg>
 
